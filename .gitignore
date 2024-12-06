@@ -1,0 +1,38 @@
+# Go build artifacts
+/bin/
+/*.exe
+/*.exe~
+/*.dll
+/*.so
+/*.dylib
+*.test
+*.out
+
+# Vendor directory (if dependencies are vendored)
+vendor/
+
+# IntelliJ IDEA project files
+.idea/
+*.iml
+
+# Logs and debugging
+*.log
+*.trace
+*.prof
+
+# Operating system files
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.swp
+*.tmp
+*.temp
+
+# Generated code
+gen/
+
+# Testing results
+*.coverprofile
+coverage.out
+
