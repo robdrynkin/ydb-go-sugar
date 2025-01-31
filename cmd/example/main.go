@@ -4,6 +4,7 @@ import (
 	"context"
 	"flag"
 	"fmt"
+	"github.com/google/uuid"
 	"github.com/robdrynkin/ydb-go-sugar/pkg/helpers"
 	"github.com/ydb-platform/ydb-go-sdk/v3"
 	"github.com/ydb-platform/ydb-go-sdk/v3/sugar"
@@ -39,9 +40,9 @@ func ConnectToDb(ctx context.Context) *ydb.Driver {
 }
 
 type Data struct {
-	BlobId   []byte `ydb:"blob_id,string,pk"`
-	ChunkNum int32  `ydb:"chunk_num,int32,pk"`
-	Data     []byte `ydb:"data,string"`
+	BlobId   uuid.UUID `ydb:"blob_id,uuid,pk"`
+	ChunkNum int32     `ydb:"chunk_num,int32,pk"`
+	Data     []byte    `ydb:"data,string"`
 }
 
 func main() {
@@ -63,10 +64,12 @@ func main() {
 		return
 	}
 
+	k1 := uuid.New()
+	k2 := uuid.New()
 	blobs := []Data{
-		{BlobId: []byte("1"), ChunkNum: 1, Data: []byte("data1")},
-		{BlobId: []byte("1"), ChunkNum: 2, Data: []byte("data2")},
-		{BlobId: []byte("2"), ChunkNum: 1, Data: []byte("data3")},
+		{BlobId: k1, ChunkNum: 1, Data: []byte("data1")},
+		{BlobId: k1, ChunkNum: 2, Data: []byte("data2")},
+		{BlobId: k2, ChunkNum: 1, Data: []byte("data3")},
 	}
 
 	err = shugar.BulkUpsert(ctx, db.Table(), database, blobs)
@@ -75,7 +78,7 @@ func main() {
 		return
 	}
 
-	key := Data{BlobId: []byte("1"), ChunkNum: 1}
+	key := Data{BlobId: k1, ChunkNum: 1}
 	var row *Data
 	err = db.Table().Do(ctx, func(ctx context.Context, session table.Session) error {
 		readTx := table.TxControl(table.BeginTx(table.WithOnlineReadOnly(table.WithInconsistentReads())), table.CommitTx())

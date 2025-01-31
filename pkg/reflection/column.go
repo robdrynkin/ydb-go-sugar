@@ -2,6 +2,7 @@ package reflection
 
 import (
 	"fmt"
+	"github.com/google/uuid"
 	"github.com/ydb-platform/ydb-go-sdk/v3/table"
 	"github.com/ydb-platform/ydb-go-sdk/v3/table/types"
 	"reflect"
@@ -24,6 +25,8 @@ func (c Column) MakeValue(v interface{}) (types.StructValueOption, error) {
 		value = types.Uint64Value(v.(uint64))
 	case "string":
 		value = types.BytesValue(v.([]byte))
+	case "uuid":
+		value = types.UuidValue(v.(uuid.UUID))
 	default:
 		return nil, fmt.Errorf("unsupported type %s", c.Type)
 	}
@@ -41,6 +44,8 @@ func (c Column) MakeValueParam(v interface{}) (table.ParameterOption, error) {
 		value = types.Uint64Value(v.(uint64))
 	case "string":
 		value = types.BytesValue(v.([]byte))
+	case "uuid":
+		value = types.UuidValue(v.(uuid.UUID))
 	default:
 		return nil, fmt.Errorf("unsupported type %s", c.Type)
 	}
