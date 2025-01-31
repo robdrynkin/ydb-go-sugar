@@ -22,7 +22,7 @@ func (t *TableSugar[T]) createTableQuery(tableName string) string {
 		pks = append(pks, t.PrimaryKeys[i].Name)
 	}
 	primaryKeys := strings.Join(pks, ",")
-	return fmt.Sprintf("CREATE TABLE IF NOT EXISTS %s (\n%s,\nPRIMARY KEY (%s))", tableName, strings.Join(columns, ",\n"), primaryKeys)
+	return fmt.Sprintf("CREATE TABLE IF NOT EXISTS `%s` (\n%s,\nPRIMARY KEY (%s))", tableName, strings.Join(columns, ",\n"), primaryKeys)
 }
 
 func (t *TableSugar[T]) CreateTable(ctx context.Context, client scripting.Client) error {
