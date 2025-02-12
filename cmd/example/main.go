@@ -58,7 +58,7 @@ func main() {
 	}
 
 	shugar.DropTable(ctx, db.Scripting())
-	err = shugar.CreateTable(ctx, db.Scripting())
+	err = shugar.CreateTable(ctx, db.Scripting(), 10)
 	if err != nil {
 		log.Fatal("table creation error", err)
 		return
