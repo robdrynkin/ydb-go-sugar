@@ -12,7 +12,7 @@ func createRow(c *reflection.Column) string {
 	return fmt.Sprintf("%s %s", c.Name, c.Type)
 }
 
-func (t *TableSugar[T]) createTableQuery(tableName string, numPartitions uint64) string {
+func (t *TableSugar[T]) CreateTableQuery(tableName string, numPartitions uint64) string {
 	columns := make([]string, 0, len(t.Columns))
 	for i := range t.Columns {
 		columns = append(columns, createRow(t.Columns[i]))
@@ -30,7 +30,7 @@ func (t *TableSugar[T]) createTableQuery(tableName string, numPartitions uint64)
 }
 
 func (t *TableSugar[T]) CreateTable(ctx context.Context, client scripting.Client, numPartitions uint64) error {
-	_, err := client.Execute(ctx, t.createTableQuery(t.TableName, numPartitions), nil)
+	_, err := client.Execute(ctx, t.CreateTableQuery(t.TableName, numPartitions), nil)
 	return err
 }
 
